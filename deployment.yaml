@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-php-app
+spec:
+  replicas: 2
+  selector:
+     matchLabels:
+        app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      volumes:
+        # Create the shared files volume to be used in both pods
+        - name: shared-files
+          persistentVolumeClaim:
+            claimName: nginx-vc
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+      containers:
+        - name: front-end
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-files
+              mountPath: /var/www/html
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+        - name: php-fpm
+          image: ivekov/php-fpm
+          volumeMounts:
+            - name: shared-files
+              mountPath: /var/www/html
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp -r /app/. /var/www/html"]
