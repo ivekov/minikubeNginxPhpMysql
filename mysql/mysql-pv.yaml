@@ -10,4 +10,4 @@ spec:
     - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /opt/docker/nginxPhpFpm/mysql
+    path: /opt/docker/nginxPhpFpm/storage/mysql

@@ -14,9 +14,9 @@ spec:
     spec:
       volumes:
         # Create the shared files volume to be used in both pods
-        - name: shared-files
-          persistentVolumeClaim:
-            claimName: nginx-vc
+        - name: app-files
+          hostPath:
+            path: app
         - name: nginx-config-volume
           configMap:
             name: nginx-config
@@ -26,7 +26,7 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: shared-files
+            - name: app-files
               mountPath: /var/www/html
             - name: nginx-config-volume
               mountPath: /etc/nginx/nginx.conf
@@ -42,7 +42,7 @@ spec:
         - name: php-fpm
           image: ivekov/php-fpm
           volumeMounts:
-            - name: shared-files
+            - name: app-files
               mountPath: /var/www/html
           lifecycle:
             postStart:

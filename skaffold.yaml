@@ -6,8 +6,6 @@ deploy:
   kubectl:
     manifests:
     - config.yaml
-    - nginxVolume.yaml
-    - nginxVolumeClaim.yaml
     - deployment.yaml
     - service.yaml
     - ingress.yaml
