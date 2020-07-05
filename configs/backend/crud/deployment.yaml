@@ -16,12 +16,13 @@ spec:
         # Create the shared files volume to be used in both pods
         - name: app-files
           hostPath:
-            path: app
+            path: /opt/docker/nginxPhpFpm/app/backend
+            type: Directory
         - name: nginx-config-volume
           configMap:
             name: nginx-config
       containers:
-        - name: front-end
+        - name: backend
           image: nginx
           ports:
             - containerPort: 80

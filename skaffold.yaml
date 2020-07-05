@@ -5,14 +5,14 @@ metadata:
 deploy:
   kubectl:
     manifests:
-    - config.yaml
-    - deployment.yaml
-    - service.yaml
-    - ingress.yaml
-    - mysql/secret.yaml
-    - mysql/mysql-configmap.yaml
-    - mysql/mysql-pv.yaml
-    - mysql/mysql-pvc.yaml
-    - mysql/mysql-ss.yaml
-    - mysql/mysql-service.yaml
+    - configs/backend/crud/config.yaml
+    - configs/backend/crud/deployment.yaml
+    - configs/backend/crud/service.yaml
+    - configs/mysql/secret.yaml
+    - configs/mysql/mysql-configmap.yaml
+    - configs/mysql/mysql-pv.yaml
+    - configs/mysql/mysql-pvc.yaml
+    - configs/mysql/mysql-ss.yaml
+    - configs/mysql/mysql-service.yaml
+    - configs/ingress.yaml
 
