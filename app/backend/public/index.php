@@ -1,5 +1,6 @@
 <?php
 
+
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 require '../vendor/autoload.php';
@@ -44,7 +45,6 @@ $app->get('/db/', function (Request $request, Response $response) {
             break;
         case 'List':
             $list = $db->getList();
-            pre($list);
             break;
         case 'Update':
             $db->update($params['id'], $params);
@@ -84,6 +84,7 @@ class ORM
         $sql = "SELECT * FROM ".self::$table;
         $res = $this->arResult['connection']->query($sql);
         $users = $res->fetchAll(PDO::FETCH_OBJ);
+        $this->arResult['result'] = $users;
         return $users;
     }
 
@@ -96,12 +97,15 @@ class ORM
     public function update($id, $values)
     {
         $setter = '';
+        unset($values['action']);
+        unset($values['id']);
         foreach($values as $key=>$value) {
             $i++;
             $and = $i == count($values) ? '' : ',';
             $setter .= $key.' = "'.$value.'"'.$and.' ';
         }
         $sql = "UPDATE ".self::$table." SET ".$setter." WHERE id = ".$id;
+        //pre($sql);
         $res = $this->arResult['connection']->query($sql);
     }
 

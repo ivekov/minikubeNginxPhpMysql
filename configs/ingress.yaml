@@ -2,11 +2,14 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: my-php-app-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-  - http:
+  - host: arch.homework
+    http:
       paths:
-      - path: /
-        backend:
-          serviceName: my-php-app-service
-          servicePort: 80
+        - path: /otusapp($|/)(.*)
+          backend:
+            serviceName: my-php-app-service
+            servicePort: 80
